@@ -1,0 +1,77 @@
+Bridge Mode Configuration:
+
+[root@VirtualHost network-scripts]# cat ifcfg-br0
+DEVICE="br0"
+BOOTPROTO=static
+ONBOOT="yes"
+NM_CONTROLLED="no"
+DELAY=0
+TYPE=Bridge
+IPADDR=192.168.1.10
+PREFIX=16
+GATEWAY=192.168.1.3
+DNS1=8.8.8.8
+DNS2=192.168.1.2
+DEFROUTE=yes
+IPV4_FAILURE_FATAL=yes
+IPV6INIT=no
+NAME="Bridge Device"
+
+[root@VirtualHost network-scripts]# cat ifcfg-em1
+
+DEVICE=em1
+ONBOOT=yes
+BOOTPROTO=none
+NM_CONTROLLED="no"
+TYPE=Ethernet
+NAME="System em1"
+BRIDGE=br0
+
+
+chkconfig --level 12345 network on
+vi /etc/selinux/config
+systemctl disable firewalld.service
+systemctl disable iptables.service
+systemctl disable ip6tables.service
+init 6
+vi /etc/sysconfig/network-scripts/ifcfg-em1
+Primary DNS 8.8.8.8
+
+
+
+ping yahoo.com
+
+yum -y install zlib zlib-devel ntpdate nmap gcc /lib/ld-linux.so.2 httpd system-config-httpd httpd-tools httpd-manual
+
+For Virtualization:
+
+yum -y install xrdp
+
+chkconfig --level 35 xrdp on
+service xrdp restart
+
+yum -y install kvm qemu-kvm python-virtinst libvirt libvirt-python virt-manager libguestfs-tools
+
+
+
+*************************************************************************************************************
+
+For Samba:
+
+yum –y install /lib/ld-linux.so.2 gcc samba samba-common samba-client cups-lib system-config-samba samba-winbind vim-minimal nmap 
+
+For Apache:
+
+yum –y install httpd system-config-httpd httpd-tools httpd-manual zlib zlib-devel ntpdate
+
+
+To change it to desktop (graphic) mode:
+# ln -sf /lib/systemd/system/runlevel5.target /etc/systemd/system/default.target
+
+To change default runlevel to 3 (multi-user with networking and console only login):
+# ln -sf /lib/systemd/system/runlevel3.target /etc/systemd/system/default.target
+
+
+If problem in Remote Desktop:
+
+yum groupinstall "GNOME Desktop"
